@@ -9,12 +9,11 @@
 // Execute `rustlings hint clippy1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
-
 use std::f32;
 
 fn main() {
-    let pi = 3.14f32;
+    // 常用常量都已经内置到语言里了。比如这个圆周率Π
+    let pi = f32::consts::PI;
     let radius = 5.00f32;
 
     let area = pi * f32::powi(radius, 2);
