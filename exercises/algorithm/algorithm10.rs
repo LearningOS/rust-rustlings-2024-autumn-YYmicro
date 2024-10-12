@@ -2,7 +2,6 @@
 	graph
 	This problem requires you to implement a basic graph functio
 */
-// I AM NOT DONE
 
 use std::collections::{HashMap, HashSet};
 use std::fmt;
@@ -30,6 +29,28 @@ impl Graph for UndirectedGraph {
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
         //TODO
+        // let adj_table = self.adjacency_table_mutable();
+        let (from_node, to_node, weight) = edge;
+        if !self.adjacency_table_mutable().contains_key(from_node) {
+            self.add_node(from_node);
+        }
+        if !self.adjacency_table_mutable().contains_key(to_node) {
+            self.add_node(to_node);
+        }
+        if self.adjacency_table_mutable().contains_key(from_node) {
+            self
+            .adjacency_table_mutable()
+            .get_mut(from_node)
+            .unwrap()
+            .push((to_node.to_string(), weight));
+        }
+        if self.adjacency_table_mutable().contains_key(to_node) {
+            self
+            .adjacency_table_mutable()
+            .get_mut(to_node)
+            .unwrap()
+            .push((from_node.to_string(), weight));
+        }
     }
 }
 pub trait Graph {
@@ -38,10 +59,29 @@ pub trait Graph {
     fn adjacency_table(&self) -> &HashMap<String, Vec<(String, i32)>>;
     fn add_node(&mut self, node: &str) -> bool {
         //TODO
-		true
+		let adj_table = self.adjacency_table_mutable();
+        if adj_table.contains_key(node) {
+            return false;
+        }
+        adj_table.insert(node.to_string(), Vec::new());
+        true
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
         //TODO
+        let adj_table = self.adjacency_table_mutable();
+        let (from_node, to_node, weight) = edge;
+        if adj_table.contains_key(from_node) {
+            adj_table
+            .get_mut(from_node)
+            .unwrap()
+            .push((to_node.to_string(), weight));
+        }
+        if adj_table.contains_key(to_node) {
+            adj_table
+            .get_mut(to_node)
+            .unwrap()
+            .push((from_node.to_string(), weight));
+        }
     }
     fn contains(&self, node: &str) -> bool {
         self.adjacency_table().get(node).is_some()
@@ -53,6 +93,7 @@ pub trait Graph {
         let mut edges = Vec::new();
         for (from_node, from_node_neighbours) in self.adjacency_table() {
             for (to_node, weight) in from_node_neighbours {
+                println!("{}->{}={}",from_node,to_node,*weight);
                 edges.push((from_node, to_node, *weight));
             }
         }
