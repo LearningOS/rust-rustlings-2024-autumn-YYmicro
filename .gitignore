@@ -14,4 +14,4 @@ rust-project.json
 public/
 
 # Local Netlify folder
-.netlify
+.netlify 
